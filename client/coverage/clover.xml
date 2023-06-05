@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<coverage generated="1685909765585" clover="3.2.0">
+  <project timestamp="1685909765585" name="All files">
+    <metrics statements="5" coveredstatements="2" conditionals="5" coveredconditionals="2" methods="4" coveredmethods="1" elements="14" coveredelements="5" complexity="0" loc="5" ncloc="5" packages="1" files="1" classes="1"/>
+    <file name="TodoItem.jsx" path="F:\Mern_Todo\client\src\components\TodoItem.jsx">
+      <metrics statements="5" coveredstatements="2" conditionals="5" coveredconditionals="2" methods="4" coveredmethods="1"/>
+      <line num="12" count="1" type="stmt"/>
+      <line num="20" count="1" type="stmt"/>
+      <line num="29" count="0" type="stmt"/>
+      <line num="35" count="0" type="stmt"/>
+      <line num="42" count="0" type="stmt"/>
+    </file>
+  </project>
+</coverage>

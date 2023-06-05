@@ -1,0 +1,107 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap");
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  user-select: none;
+  font-family: "Roboto";
+}
+.container-fluid {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-image: url("../src/Images/bridge.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+.todo-structure {
+  width: 350px;
+  height: 400px;
+}
+.item-adder {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 70px;
+  background-color: rgba(0, 0, 50, 0.5);
+  box-shadow: 7px 7px 10px rgba(0, 0, 0, 0.3);
+  border-radius: 5px;
+}
+.item-display {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 30px;
+  width: 100%;
+  min-height: 0;
+  max-height: 80%;
+  overflow-y: auto;
+  background-color: rgba(193, 193, 233, 0.8);
+  border-radius: 5px;
+}
+input,
+p {
+  width: 100%;
+  height: 100%;
+  outline: none;
+  border: none;
+  background-color: transparent;
+  color: whitesmoke;
+}
+input::placeholder {
+  color: whitesmoke;
+}
+ul,
+li {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+ul {
+  width: 90%;
+  overflow: hidden;
+}
+li {
+  margin: 10px;
+}
+
+.item-display::-webkit-scrollbar {
+  width: 8px; /* Set the width of the scrollbar */
+}
+
+.item-display::-webkit-scrollbar-track {
+  background: #f1f1f1; /* Set the background color of the scrollbar track */
+}
+
+.item-display::-webkit-scrollbar-thumb {
+  background-color: rgba(
+    1,
+    1,
+    70,
+    0.7
+  ); /* Set the color of the scrollbar thumb */
+}
+
+.item-display::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(
+    0,
+    0,
+    50,
+    1
+  ); /* Set the color of the scrollbar thumb on hover */
+}
+footer {
+  background-color: rgba(0, 0, 50, 0.5);
+  color: white;
+  padding: 20px;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+}
