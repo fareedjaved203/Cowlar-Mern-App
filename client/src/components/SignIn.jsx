@@ -17,6 +17,16 @@ const SignIn = () => {
   const sendDataToBackend = async (e) => {
     e.preventDefault();
     try {
+      toast.info("Processing", {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
       const data = await axios.post("http://localhost:8000/signin", {
         email,
         password,
@@ -43,7 +53,7 @@ const SignIn = () => {
   return (
     <>
       <div className="container-first">
-        {/* <ToastContainer></ToastContainer> */}
+        <ToastContainer></ToastContainer>
         <div className="container auth-wrapper">
           <div className="auth-inner">
             <form action="post">

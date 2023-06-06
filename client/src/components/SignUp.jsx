@@ -5,13 +5,15 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 import Footer from "./Footer";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 const SignUp = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const [profilePic, setPostImage] = useState("");
+
+  const navigate = useNavigate();
 
   const handleFileUpload = async (e) => {
     const file = e.target.files[0];
@@ -34,12 +36,23 @@ const SignUp = () => {
       return;
     } else {
       try {
+        toast.info("Processing", {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+        });
         await axios.post("http://localhost:8000/signup", {
           name,
           email,
           password,
           profilePic,
         });
+
         navigate("/sign-in");
       } catch (error) {
         console.log(error);
