@@ -38,7 +38,6 @@ const App = () => {
         }
       } catch (error) {
         // Handle errors
-        console.log("Error fetching data:", error);
       }
     };
 
