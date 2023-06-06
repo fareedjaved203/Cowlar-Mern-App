@@ -30,14 +30,15 @@ const TodoInput = ({
             {mode === "input" && (
               <input
                 placeholder="To do list"
+                className="input"
                 type="text"
                 value={inputValue}
                 onKeyPress={handleKeyPress}
                 onChange={handleChange}
               />
             )}
-            {mode === "completed" && <p>Completed Tasks</p>}
-            {mode === "pending" && <p>Pending Tasks</p>}
+            {mode === "completed" && <p className="p">Completed Tasks</p>}
+            {mode === "pending" && <p className="p">Pending Tasks</p>}
           </Col>
           <Col>
             {isHidden ? (

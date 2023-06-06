@@ -1,6 +1,5 @@
 require("../db/conn");
 const Todo = require("../model/todoSchema");
-const User = require("../model/userSchema");
 
 const getData = async (req, res) => {
   try {
