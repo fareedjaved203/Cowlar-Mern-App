@@ -7,6 +7,7 @@ import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 import Header from "./Header";
 import Footer from "./Footer";
+import Cookies from "js-cookie";
 
 const SignIn = () => {
   const [email, setEmail] = useState("");
@@ -21,6 +22,19 @@ const SignIn = () => {
         password,
       });
       navigate("/todolist");
+      // if (validated) {
+      // } else {
+      //   toast.error("InCorrect Details", {
+      //     position: "top-center",
+      //     autoClose: 5000,
+      //     hideProgressBar: false,
+      //     closeOnClick: true,
+      //     pauseOnHover: true,
+      //     draggable: true,
+      //     progress: undefined,
+      //     theme: "dark",
+      //   });
+      // }
     } catch (error) {
       console.log(error);
     }

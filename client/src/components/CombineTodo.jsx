@@ -7,6 +7,7 @@ import TodoList from "./TodoList";
 import TodoItem from "./TodoItem";
 import Header from "./Header";
 import Footer from "./Footer";
+import Cookies from "js-cookie";
 
 const App = () => {
   const [todos, setTodos] = useState([]);
@@ -16,13 +17,19 @@ const App = () => {
   const [mode, setMode] = useState("input");
   const [isOpen, setIsOpen] = useState(false);
   const [confirmId, setId] = useState("");
+  const [pic, setPic] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Make GET request to backend API
         const response = await axios.get("http://localhost:8000/");
-        // Update component state with retrieved data
+
+        // const decryptedEmail = Cookies.get("email");
+        // const image = await axios.get(
+        //   `http://localhost:8000/signin/${decryptedEmail}`
+        // );
+        // console.log(image);
+        // setPic(image.data.profilePic);
         if (mode === "input") {
           return setTodos(response.data);
         } else if (mode === "pending") {
@@ -110,6 +117,7 @@ const App = () => {
   return (
     <>
       <div className="container-fluid">
+        {/* {pic && <img src={`data:image/png;base64,${pic}`} alt="Your image" />} */}
         <div className="todo-structure">
           <TodoInput
             mode={mode}

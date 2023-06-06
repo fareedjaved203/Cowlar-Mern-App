@@ -17,19 +17,33 @@ const SignUp = () => {
     const file = e.target.files[0];
     const base64 = await convertToBase64(file);
     setPostImage(base64);
-    console.log(base64);
   };
   const sendDataToBackend = async (e) => {
     e.preventDefault();
-    try {
-      await axios.post("http://localhost:8000/signup", {
-        name,
-        email,
-        password,
-        profilePic,
+    if (!email || !password || !name) {
+      toast.error("Enter All Details Correctly", {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
       });
-    } catch (error) {
-      console.log(error);
+      return;
+    } else {
+      try {
+        await axios.post("http://localhost:8000/signup", {
+          name,
+          email,
+          password,
+          profilePic,
+        });
+        navigate("/sign-in");
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
   return (

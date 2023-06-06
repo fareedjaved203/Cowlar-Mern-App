@@ -8,5 +8,6 @@ router.use(cors());
 
 router.post("/signin", userController.authenticateUser);
 router.post("/signup", userController.postUser);
+router.post("/signin/:email", userController.getUser);
 
 module.exports = router;

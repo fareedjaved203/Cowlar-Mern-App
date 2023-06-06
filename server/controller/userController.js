@@ -1,7 +1,13 @@
 require("../db/conn");
+const express = require("express");
 const User = require("../model/userSchema");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const cookieParser = require("cookie-parser");
+
+const app = express();
+
+app.use(cookieParser());
 
 const postUser = async (req, res) => {
   const { name, email, password, profilePic } = req.body; //storing the posted data from form/postman to the model defined schema using obj destructuring
@@ -49,22 +55,21 @@ const authenticateUser = async (req, res) => {
     if (userLogin) {
       //matching password
       const isMatch = await bcrypt.compare(password, userLogin.password);
+      if (isMatch) {
+        res.json({ message: true });
+      } else {
+        res.json({ message: true });
+      }
+      res.json(userLogin.profilePic);
 
       //fetching token value that is defined in the schema
-      const token = userLogin.generateAuthToken();
+      // const token = userLogin.generateAuthToken();
 
       //store the token in a cookie
-      res.cookie("jwt-token", token, {
-        expires: new Date(Date.now() + 25892000000), //to expire the token after 30 days
-        httpOnly: true, //right now working with http only
-      });
-
-      if (isMatch) {
-        res.json({ message: userLogin });
-        console.log("login Successful");
-      } else {
-        res.json({ message: "User not found" });
-      }
+      // res.cookie("jwt-token", token, {
+      //   expires: new Date(Date.now() + 25892000000), //to expire the token after 30 days
+      //   httpOnly: true, //right now working with http only
+      // });
     } else {
       res.json({ message: "User not found" });
     }
@@ -73,9 +78,21 @@ const authenticateUser = async (req, res) => {
   }
 };
 
+const getUser = async (req, res) => {
+  try {
+    const email = req.params.email;
+    const existsEmail = User.find({ email });
+    if (existsEmail) {
+      res.json(existsEmail.profilePic);
+    }
+  } catch (error) {
+    res.json({ message: "error" });
+  }
+};
+
 //req.body fetches the data from forms submitted
 //response from the server is in the form of json
 //below code line is used to show below data on the postman
 // res.json({ message: req.body });
 
-module.exports = { authenticateUser, postUser };
+module.exports = { authenticateUser, postUser, getUser };
