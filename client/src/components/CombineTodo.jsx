@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./css/todolist.css";
-import axios from "axios";
 import TodoInput from "./TodoInput";
 import TodoList from "./TodoList";
 import TodoItem from "./TodoItem";
@@ -19,15 +18,35 @@ const App = () => {
   const [mode, setMode] = useState("input");
   const [isOpen, setIsOpen] = useState(false);
   const [confirmId, setId] = useState("");
-  const [pic, setPic] = useState(null);
+  const [data, setData] = useState("");
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [mode, data]);
   var fetchData = async () => {
     try {
       const receive = await getData();
-      setTodos(receive);
+      switch (mode) {
+        case "completed":
+          setTodos(
+            receive.filter((item) => {
+              return item.status === "completed";
+            })
+          );
+          setData("completed");
+          break;
+        case "pending":
+          setTodos(
+            receive.filter((item) => {
+              return item.status === "pending";
+            })
+          );
+          setData("pending");
+          break;
+        default:
+          setTodos(receive);
+          setData("data added");
+      }
     } catch (error) {
       console.log(error);
     }
@@ -39,7 +58,7 @@ const App = () => {
   };
 
   const toggleMode = () => {
-    // Toggle between input, Text1, and Text2
+    // Toggle between input text, completed tasks and pending tasks
     if (mode === "input") {
       setMode("completed");
     } else if (mode === "completed") {
@@ -50,14 +69,16 @@ const App = () => {
   };
 
   const toggleVisibility = () => {
-    setIsHidden(!isHidden); // Toggle the visibility state
+    //it sets the visibility of task items
+    setIsHidden(!isHidden);
     setAccordianChecked(!accordianChecked);
   };
 
   const handleKeyPress = (event) => {
     if (event.key === "Enter") {
-      // addTodo();
       sendDataToBackend();
+      setData("data posted");
+      console.log(data);
       setInputValue("");
     }
   };
@@ -65,14 +86,18 @@ const App = () => {
   const removeTodo = async (id) => {
     try {
       await removeData(id);
+      setData("data deleted");
     } catch (error) {
       console.log(error);
     }
   };
-
+  const updateTodo = (id) => {
+    handleIconToggle(id);
+    setData("data updated");
+  };
   const handleIconToggle = async (id) => {
     try {
-      await updateData(id);
+      const data = await updateData(id);
     } catch (error) {
       console.log(error);
     }
@@ -106,7 +131,7 @@ const App = () => {
           <TodoList
             todos={todos}
             toggleAccordion={toggleAccordion}
-            handleIconToggle={handleIconToggle}
+            handleIconToggle={updateTodo}
             removeTodo={removeTodo}
             isHidden={isHidden}
             isOpen={isOpen}
@@ -117,7 +142,7 @@ const App = () => {
                 key={value._id}
                 todo={value}
                 toggleAccordion={toggleAccordion}
-                handleIconToggle={handleIconToggle}
+                handleIconToggle={updateTodo}
                 removeTodo={removeTodo}
                 isOpen={isOpen}
                 confirmId={confirmId}

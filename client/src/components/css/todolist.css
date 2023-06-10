@@ -1,11 +1,9 @@
-@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap");
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
   user-select: none;
-  font-family: "Roboto";
-  color: white;
+  font-family: Arial, Helvetica, sans-serif;
 }
 .container-fluid {
   background-image: url("../src/Images/bridge.jpg");
@@ -95,4 +93,7 @@ li {
     50,
     1
   ); /* Set the color of the scrollbar thumb on hover */
+}
+.item-details {
+  color: white;
 }

@@ -31,6 +31,7 @@ const TodoInput = ({
               <input
                 placeholder="To do list"
                 className="input"
+                name="todo"
                 type="text"
                 value={inputValue}
                 onKeyPress={handleKeyPress}
