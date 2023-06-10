@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useReducer } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./css/todolist.css";
 import TodoInput from "./TodoInput";
@@ -12,56 +12,99 @@ import { postData } from "../services/postData";
 import Alert from "react-bootstrap/Alert";
 import Header from "./Header";
 
+const initialState = {
+  todos: [],
+  inputValue: "",
+  isHidden: false,
+  accordianChecked: false,
+  mode: "input",
+  isOpen: false,
+  confirmId: "",
+  data: "",
+  enableAlert: false,
+  variant: "",
+  alertText: "",
+};
+
+const reducer = (state, action) => {
+  switch (action.type) {
+    case "SET_TODOS":
+      return { ...state, todos: action.payload };
+    case "SET_INPUT_VALUE":
+      return { ...state, inputValue: action.payload };
+    case "SET_IS_HIDDEN":
+      return { ...state, isHidden: action.payload };
+    case "SET_ACCORDIAN_CHECKED":
+      return { ...state, accordianChecked: action.payload };
+    case "SET_MODE":
+      return { ...state, mode: action.payload };
+    case "SET_IS_OPEN":
+      return { ...state, isOpen: action.payload };
+    case "SET_CONFIRM_ID":
+      return { ...state, confirmId: action.payload };
+    case "SET_DATA":
+      return { ...state, data: action.payload };
+    case "SET_ENABLE_ALERT":
+      return { ...state, enableAlert: action.payload };
+    case "SET_VARIANT":
+      return { ...state, variant: action.payload };
+    case "SET_ALERT":
+      return { ...state, alertText: action.payload };
+    default:
+      return state;
+  }
+};
+
 const App = () => {
-  const [todos, setTodos] = useState([]);
-  const [inputValue, setInputValue] = useState("");
-  const [isHidden, setIsHidden] = useState(false);
-  const [accordianChecked, setAccordianChecked] = useState(false);
-  const [mode, setMode] = useState("input");
-  const [isOpen, setIsOpen] = useState(false);
-  const [confirmId, setId] = useState("");
-  const [data, setData] = useState("");
-  const [enableAlert, isAlert] = useState(false);
-  const [variant, setVariant] = useState("");
-  const [alertText, setAlert] = useState("");
+  const [state, dispatch] = useReducer(reducer, initialState);
+  const {
+    todos,
+    inputValue,
+    isHidden,
+    accordianChecked,
+    mode,
+    isOpen,
+    confirmId,
+    data,
+    enableAlert,
+    variant,
+    alertText,
+  } = state;
 
   useEffect(() => {
     if (enableAlert) {
       const timer = setTimeout(() => {
-        isAlert(false);
+        dispatch({ type: "SET_ENABLE_ALERT", payload: false });
       }, 1000);
 
-      // Clean up the timer when the component unmounts or when enableAlert changes
       return () => {
         clearTimeout(timer);
       };
     }
     fetchData();
   }, [mode, data, enableAlert]);
-  var fetchData = async () => {
+
+  const fetchData = async () => {
     try {
       const receive = await getData();
       switch (mode) {
         case "completed":
-          setTodos(
-            receive.filter((item) => {
-              return item.status === "completed";
-            })
-          );
-
-          setData("completed");
+          dispatch({
+            type: "SET_TODOS",
+            payload: receive.filter((item) => item.status === "completed"),
+          });
+          dispatch({ type: "SET_DATA", payload: "completed" });
           break;
         case "pending":
-          setTodos(
-            receive.filter((item) => {
-              return item.status === "pending";
-            })
-          );
-          setData("pending");
+          dispatch({
+            type: "SET_TODOS",
+            payload: receive.filter((item) => item.status === "pending"),
+          });
+          dispatch({ type: "SET_DATA", payload: "pending" });
           break;
         default:
-          setTodos(receive);
-          setData("data added");
+          dispatch({ type: "SET_TODOS", payload: receive });
+          dispatch({ type: "SET_DATA", payload: "data added" });
       }
     } catch (error) {
       console.log(error);
@@ -69,62 +112,56 @@ const App = () => {
   };
 
   const toggleAccordion = (id) => {
-    setIsOpen(!isOpen);
-    setId(id);
+    dispatch({ type: "SET_IS_OPEN", payload: !isOpen });
+    dispatch({ type: "SET_CONFIRM_ID", payload: id });
   };
 
   const toggleMode = () => {
-    // Toggle between input text, completed tasks and pending tasks
     if (mode === "input") {
-      setMode("completed");
+      dispatch({ type: "SET_MODE", payload: "completed" });
     } else if (mode === "completed") {
-      setMode("pending");
+      dispatch({ type: "SET_MODE", payload: "pending" });
     } else {
-      setMode("input");
+      dispatch({ type: "SET_MODE", payload: "input" });
     }
   };
 
   const toggleVisibility = () => {
-    //it sets the visibility of task items
-    setIsHidden(!isHidden);
-    setAccordianChecked(!accordianChecked);
+    dispatch({ type: "SET_IS_HIDDEN", payload: !isHidden });
+    dispatch({ type: "SET_ACCORDIAN_CHECKED", payload: !accordianChecked });
   };
 
   const handleKeyPress = (event) => {
     if (event.key === "Enter") {
-      isAlert(true);
-      setVariant("primary");
-      setAlert("Loading...");
-      isAlert(true);
+      dispatch({ type: "SET_ENABLE_ALERT", payload: true });
+      dispatch({ type: "SET_VARIANT", payload: "primary" });
+      dispatch({ type: "SET_ALERT", payload: "Loading..." });
 
       sendDataToBackend();
-      setData("data posted");
-      setInputValue("");
+      dispatch({ type: "SET_DATA", payload: "data posted" });
+      dispatch({ type: "SET_INPUT_VALUE", payload: "" });
     }
   };
 
   const removeTodo = async (id) => {
     try {
-      setVariant("primary");
-      setAlert("Loading...");
-      isAlert(true);
+      dispatch({ type: "SET_VARIANT", payload: "primary" });
+      dispatch({ type: "SET_ALERT", payload: "Loading..." });
+      dispatch({ type: "SET_ENABLE_ALERT", payload: true });
       const add = await removeData(id);
-      // setData("data deleted");
-      // setVariant("success");
-      // setAlert("Item Deleted Successfully!");
     } catch (error) {
       console.log(error);
     }
   };
+
   const updateTodo = (id) => {
-    setVariant("primary");
-    setAlert("Loading...");
-    isAlert(true);
+    dispatch({ type: "SET_VARIANT", payload: "primary" });
+    dispatch({ type: "SET_ALERT", payload: "Loading..." });
+    dispatch({ type: "SET_ENABLE_ALERT", payload: true });
     handleIconToggle(id);
-    // setVariant("success");
-    // setAlert("Item Updated Successfully!");
-    setData("data updated");
+    dispatch({ type: "SET_DATA", payload: "data updated" });
   };
+
   const handleIconToggle = async (id) => {
     try {
       const data = await updateData(id);
@@ -134,7 +171,7 @@ const App = () => {
   };
 
   const handleChange = (e) => {
-    setInputValue(e.target.value);
+    dispatch({ type: "SET_INPUT_VALUE", payload: e.target.value });
   };
 
   const sendDataToBackend = async () => {
@@ -151,7 +188,13 @@ const App = () => {
 
       {enableAlert ? (
         <div className="custom-toast">
-          <Alert variant={variant} onClose={() => isAlert(false)} dismissible>
+          <Alert
+            variant={variant}
+            onClose={() =>
+              dispatch({ type: "SET_ENABLE_ALERT", payload: false })
+            }
+            dismissible
+          >
             {alertText}
           </Alert>
         </div>
