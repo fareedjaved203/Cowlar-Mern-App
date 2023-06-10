@@ -5,6 +5,7 @@
   padding: 0;
   user-select: none;
   font-family: "Roboto";
+  color: white;
 }
 .container-fluid {
   background-image: url("../src/Images/bridge.jpg");

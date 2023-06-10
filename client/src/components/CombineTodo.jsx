@@ -5,9 +5,11 @@ import axios from "axios";
 import TodoInput from "./TodoInput";
 import TodoList from "./TodoList";
 import TodoItem from "./TodoItem";
-import Header from "./Header";
 import Footer from "./Footer";
-import Cookies from "js-cookie";
+import { getData } from "../services/getData";
+import { removeData } from "../services/removeData";
+import { updateData } from "../services/updateData";
+import { postData } from "../services/postData";
 
 const App = () => {
   const [todos, setTodos] = useState([]);
@@ -20,38 +22,16 @@ const App = () => {
   const [pic, setPic] = useState(null);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get("http://localhost:8000/");
-
-        // const decryptedEmail = Cookies.get("email");
-        // const image = await axios.get(
-        //   `http://localhost:8000/signin/${decryptedEmail}`
-        // );
-        // console.log(image);
-        // setPic(image.data.profilePic);
-        if (mode === "input") {
-          return setTodos(response.data);
-        } else if (mode === "pending") {
-          const showPending = response.data.filter((val) => {
-            return val.status === "pending";
-          });
-
-          return setTodos(showPending);
-        } else {
-          const showCompleted = response.data.filter((val) => {
-            return val.status === "completed";
-          });
-
-          return setTodos(showCompleted);
-        }
-      } catch (error) {
-        // Handle errors
-      }
-    };
-
     fetchData();
-  }, [todos, mode]);
+  }, []);
+  var fetchData = async () => {
+    try {
+      const receive = await getData();
+      setTodos(receive);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const toggleAccordion = (id) => {
     setIsOpen(!isOpen);
@@ -84,7 +64,7 @@ const App = () => {
 
   const removeTodo = async (id) => {
     try {
-      const response = await axios.delete(`http://localhost:8000/${id}`);
+      await removeData(id);
     } catch (error) {
       console.log(error);
     }
@@ -92,9 +72,7 @@ const App = () => {
 
   const handleIconToggle = async (id) => {
     try {
-      const response = await axios.put(`http://localhost:8000/${id}`, {
-        status: "completed",
-      });
+      await updateData(id);
     } catch (error) {
       console.log(error);
     }
@@ -106,9 +84,7 @@ const App = () => {
 
   const sendDataToBackend = async () => {
     try {
-      await axios.post("http://localhost:8000/", {
-        inputValue,
-      });
+      await postData(inputValue);
     } catch (error) {
       console.log(error);
     }
@@ -117,7 +93,6 @@ const App = () => {
   return (
     <>
       <div className="container-fluid">
-        {/* {pic && <img src={`data:image/png;base64,${pic}`} alt="Your image" />} */}
         <div className="todo-structure">
           <TodoInput
             mode={mode}

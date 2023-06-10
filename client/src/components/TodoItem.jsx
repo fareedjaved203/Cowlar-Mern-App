@@ -3,9 +3,6 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import { RxDragHandleDots2 } from "react-icons/rx";
-import { FaGripLines } from "react-icons/fa";
-import { MdKeyboardArrowDown } from "react-icons/md";
-import { IoIosArrowUp } from "react-icons/io";
 import { BsCheckCircleFill } from "react-icons/bs";
 import { BsCircle } from "react-icons/bs";
 
