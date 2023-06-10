@@ -1,4 +1,4 @@
-require("../db/conn");
+require("../../config/db");
 const Todo = require("../model/todoSchema");
 
 const getData = async (req, res) => {

@@ -3,12 +3,11 @@ const app = express();
 const cors = require("cors");
 const compression = require("compression");
 require("dotenv").config();
-require("./db/conn");
+require("../config/db");
 
 const port = process.env.PORT || 8000;
 const api = process.env.API;
 
-require("./db/conn"); //importing db connection from db folder
 require("./model/todoSchema"); //defined schema
 app.use(compression());
 app.use(
@@ -25,5 +24,5 @@ app.use(express.json({ limit: "50mb" })); // Set maximum request body size, //a 
 
 app.use(express.urlencoded({ extended: true }));
 
-app.use(require("./router/todoRoutes")); //to link router file
+app.use(require("./routes/todoRoutes")); //to link router file
 app.listen(port);

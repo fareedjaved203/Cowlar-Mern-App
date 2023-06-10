@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const cors = require("cors");
 
-const todoController = require("../controller/todoController");
+const todoController = require("../controllers/todoController");
 
 router.use(cors());
 
