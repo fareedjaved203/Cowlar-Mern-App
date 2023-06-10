@@ -7,7 +7,6 @@ require("./db/conn");
 
 const port = process.env.PORT || 8000;
 const api = process.env.API;
-console.log(port);
 
 require("./db/conn"); //importing db connection from db folder
 require("./model/todoSchema"); //defined schema

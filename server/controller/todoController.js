@@ -14,7 +14,7 @@ const postData = async (req, res) => {
   try {
     const task = req.body.inputValue;
     const todo = new Todo({ task });
-    const saveTodo = await todo.save();
+    await todo.save();
   } catch (error) {
     console.log(error);
   }
@@ -26,13 +26,11 @@ const updateData = async (req, res) => {
   const completionTime = Date.now();
   try {
     const todo = await Todo.findById(id);
-    if (!todo) {
-      console.log("Id not Found");
+    if (todo) {
+      todo.status = status;
+      todo.completionTime = completionTime;
+      await todo.save();
     }
-    todo.status = status;
-    todo.completionTime = completionTime;
-    await todo.save();
-    console.log("Successfully Updated");
   } catch (error) {
     console.log(error);
   }
@@ -51,40 +49,9 @@ const removeData = async (req, res) => {
   }
 };
 
-const getUser = (req, res) => {
-  res.send("User Page");
-};
-
-const postUser = async (req, res) => {
-  const { name, email, password, profilePic } = req.body;
-  try {
-    const user = new User({
-      name,
-      email,
-      password,
-      profilePic,
-    });
-    const userAdded = await user.save();
-    if (!userAdded) {
-      return res.json({ message: "User Not Created" });
-    } else {
-      const findAddedUser = await User.findOne({ email });
-      console.log(findAddedUser);
-      const todo = new Todo({ user: 2 });
-      const referUserToTodoList = await todo.save();
-      console.log(referUserToTodoList);
-      return res.status(201).json({ message: "User Saved Successfully" });
-    }
-  } catch (error) {
-    res.status(501).json({ message: "User Not Created" });
-  }
-};
-
 module.exports = {
   getData,
   postData,
   updateData,
   removeData,
-  getUser,
-  postUser,
 };

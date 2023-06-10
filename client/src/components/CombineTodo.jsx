@@ -9,6 +9,8 @@ import { getData } from "../services/getData";
 import { removeData } from "../services/removeData";
 import { updateData } from "../services/updateData";
 import { postData } from "../services/postData";
+import Alert from "react-bootstrap/Alert";
+import Header from "./Header";
 
 const App = () => {
   const [todos, setTodos] = useState([]);
@@ -19,10 +21,23 @@ const App = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [confirmId, setId] = useState("");
   const [data, setData] = useState("");
+  const [enableAlert, isAlert] = useState(false);
+  const [variant, setVariant] = useState("");
+  const [alertText, setAlert] = useState("");
 
   useEffect(() => {
+    if (enableAlert) {
+      const timer = setTimeout(() => {
+        isAlert(false);
+      }, 1000);
+
+      // Clean up the timer when the component unmounts or when enableAlert changes
+      return () => {
+        clearTimeout(timer);
+      };
+    }
     fetchData();
-  }, [mode, data]);
+  }, [mode, data, enableAlert]);
   var fetchData = async () => {
     try {
       const receive = await getData();
@@ -33,6 +48,7 @@ const App = () => {
               return item.status === "completed";
             })
           );
+
           setData("completed");
           break;
         case "pending":
@@ -76,23 +92,37 @@ const App = () => {
 
   const handleKeyPress = (event) => {
     if (event.key === "Enter") {
+      isAlert(true);
+      setVariant("primary");
+      setAlert("Loading...");
+      isAlert(true);
+
       sendDataToBackend();
       setData("data posted");
-      console.log(data);
       setInputValue("");
     }
   };
 
   const removeTodo = async (id) => {
     try {
-      await removeData(id);
-      setData("data deleted");
+      setVariant("primary");
+      setAlert("Loading...");
+      isAlert(true);
+      const add = await removeData(id);
+      // setData("data deleted");
+      // setVariant("success");
+      // setAlert("Item Deleted Successfully!");
     } catch (error) {
       console.log(error);
     }
   };
   const updateTodo = (id) => {
+    setVariant("primary");
+    setAlert("Loading...");
+    isAlert(true);
     handleIconToggle(id);
+    // setVariant("success");
+    // setAlert("Item Updated Successfully!");
     setData("data updated");
   };
   const handleIconToggle = async (id) => {
@@ -117,7 +147,17 @@ const App = () => {
 
   return (
     <>
-      <div className="container-fluid">
+      <Header />
+
+      {enableAlert ? (
+        <div className="custom-toast">
+          <Alert variant={variant} onClose={() => isAlert(false)} dismissible>
+            {alertText}
+          </Alert>
+        </div>
+      ) : null}
+
+      <div className="container-fluid body">
         <div className="todo-structure">
           <TodoInput
             mode={mode}

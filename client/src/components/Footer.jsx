@@ -1,5 +1,5 @@
 import React from "react";
-import "./css/registration.css";
+import "./css/todolist.css";
 
 const Footer = () => {
   return (

@@ -29,7 +29,7 @@ const TodoInput = ({
           <Col xs={8}>
             {mode === "input" && (
               <input
-                placeholder="To do list"
+                placeholder="Add Item"
                 className="input"
                 name="todo"
                 type="text"

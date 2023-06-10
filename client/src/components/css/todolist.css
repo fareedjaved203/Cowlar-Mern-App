@@ -4,22 +4,31 @@
   padding: 0;
   user-select: none;
   font-family: Arial, Helvetica, sans-serif;
+  overflow: hidden;
 }
-.container-fluid {
-  background-image: url("../src/Images/bridge.jpg");
+body {
+  background-image: url("../src/assets/images/bridge.jpg");
+  background-repeat: no-repeat;
+  background-position: cover;
+  background-size: cover;
+  overflow: hidden;
+  min-height: 100vh;
+  display: flex;
+  font-weight: 400;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.body {
   display: flex;
   justify-content: center;
-  align-items: center;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+  align-items: start;
+  margin-top: 80px;
   width: 100vw;
   height: 100vh;
-  overflow: hidden;
 }
 .todo-structure {
   width: 350px;
-  height: 400px;
+  height: 350px;
 }
 .item-adder {
   display: flex;
@@ -43,6 +52,7 @@
   background-color: rgba(0, 0, 50, 0.4);
   border-radius: 5px;
 }
+
 .input,
 .p {
   width: 100%;
@@ -96,4 +106,27 @@ li {
 }
 .item-details {
   color: white;
+}
+.todo-item {
+  cursor: pointer;
+  border-bottom: 1px solid white;
+  width: 100%;
+  padding-bottom: 20px;
+}
+.custom-toast {
+  position: fixed;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999;
+}
+footer {
+  background-color: rgba(1, 1, 26, 0.5);
+  color: white;
+  padding: 20px;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
 }

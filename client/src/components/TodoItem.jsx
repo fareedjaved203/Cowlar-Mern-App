@@ -5,6 +5,7 @@ import Col from "react-bootstrap/Col";
 import { AiTwotoneDelete } from "react-icons/ai";
 import { BsCheckCircleFill } from "react-icons/bs";
 import { BsCircle } from "react-icons/bs";
+import Alert from "react-bootstrap/Alert";
 
 const TodoItem = ({
   value,
@@ -16,75 +17,98 @@ const TodoItem = ({
 }) => {
   const [formattedStartTime, setFormattedStartTime] = useState(null);
   const [formattedCompleteTime, setFormattedCompleteTime] = useState(null);
+  const [enableAlert, isAlert] = useState(false);
   useEffect(() => {
+    if (enableAlert) {
+      const timer = setTimeout(() => {
+        isAlert(false);
+      }, 2000);
+
+      // Clean up the timer when the component unmounts or when enableAlert changes
+      return () => {
+        clearTimeout(timer);
+      };
+    }
     const startTime = new Date(value.startTime);
     const completionTime = new Date(value.completionTime);
     const formattedStartTime = startTime.toLocaleTimeString();
     const formattedCompletionTime = completionTime.toLocaleTimeString();
     setFormattedStartTime(formattedStartTime);
     setFormattedCompleteTime(formattedCompletionTime);
-  }, [value]);
+  }, [value, enableAlert]);
   return (
-    <li key={value._id}>
-      <Container style={{ color: "white" }}>
-        <Row>
-          <Col style={{ cursor: "pointer" }}>
-            {value.status === "completed" ? (
-              <BsCheckCircleFill size={20} style={{ color: "white" }} />
-            ) : (
-              <BsCircle
-                onClick={() => handleIconToggle(value._id)}
-                size={20}
-                style={{ color: "white" }}
-              />
-            )}
-          </Col>
-          <Col xs={8} onClick={() => toggleAccordion(value._id)}>
-            {value.task}
-          </Col>
-
-          <Col>
-            <AiTwotoneDelete
-              size={20}
-              style={{
-                color: "#960C07",
-                cursor: "pointer",
-              }}
-              onClick={() => removeTodo(value._id)}
-            />
-          </Col>
-        </Row>
-        {isOpen && confirmId === value._id && (
-          <Container
-            style={{
-              marginTop: "10px",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              flexDirection: "column",
-              color: "white",
-            }}
-          >
-            <Row className="item-details">
-              {" "}
-              <span>Start Time: {formattedStartTime}</span>{" "}
-            </Row>
-            <Row className="item-details">
-              {value.completionTime ? (
-                <span>Completion Time: {formattedCompleteTime}</span>
+    <>
+      {enableAlert && (
+        <div className="custom-toast">
+          <Alert variant="primary" onClose={() => isAlert(false)} dismissible>
+            Task Already Completed!
+          </Alert>
+        </div>
+      )}
+      <li key={value._id} className="todo-item">
+        <Container style={{ color: "white" }}>
+          <Row>
+            <Col style={{ cursor: "pointer" }}>
+              {value.status === "completed" ? (
+                <BsCheckCircleFill
+                  size={20}
+                  style={{ color: "white" }}
+                  onClick={() => isAlert(true)}
+                />
               ) : (
-                <span>Completion Time: N/A</span>
+                <BsCircle
+                  onClick={() => handleIconToggle(value._id)}
+                  size={20}
+                  style={{ color: "white" }}
+                />
               )}
-            </Row>
-            <Row className="item-details">
-              {" "}
-              <span>Status: {value.status}</span>{" "}
-            </Row>
-          </Container>
-        )}
-      </Container>
-      <hr />
-    </li>
+            </Col>
+            <Col xs={8} onClick={() => toggleAccordion(value._id)}>
+              {value.task}
+            </Col>
+
+            <Col>
+              <AiTwotoneDelete
+                size={20}
+                style={{
+                  color: "white",
+                  cursor: "pointer",
+                }}
+                onClick={() => removeTodo(value._id)}
+              />
+            </Col>
+          </Row>
+          {isOpen && confirmId === value._id && (
+            <Container
+              style={{
+                marginTop: "10px",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                flexDirection: "column",
+                color: "white",
+              }}
+            >
+              <Row className="item-details">
+                {" "}
+                <span>Start Time: {formattedStartTime}</span>{" "}
+              </Row>
+              <Row className="item-details">
+                {value.completionTime ? (
+                  <span>Completion Time: {formattedCompleteTime}</span>
+                ) : (
+                  <span>Completion Time: N/A</span>
+                )}
+              </Row>
+              <Row className="item-details">
+                {" "}
+                <span>Status: {value.status}</span>{" "}
+              </Row>
+            </Container>
+          )}
+        </Container>
+      </li>
+    </>
   );
 };
 
