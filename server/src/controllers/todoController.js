@@ -1,57 +1,48 @@
-require("../../config/db");
-const Todo = require("../model/todoSchema");
+const todoServices = require("../services/todoServices");
 
-const getData = async (req, res) => {
+async function getAllTodoItems(req, res, next) {
   try {
-    const data = await Todo.find();
-    res.json(data);
+    const todos = await todoServices.getTodos();
+    res.json(todos);
   } catch (error) {
-    console.log(error);
+    next(error);
   }
-};
+}
 
-const postData = async (req, res) => {
+async function createTodoItem(req, res, next) {
   try {
     const task = req.body.inputValue;
-    const todo = new Todo({ task });
-    await todo.save();
+    const newTodo = await todoServices.createTodo(task);
+    res.status(201).json(newTodo);
   } catch (error) {
-    console.log(error);
+    next(error);
   }
-};
+}
 
-const updateData = async (req, res) => {
-  const { id } = req.params;
-  const { status } = req.body;
-  const completionTime = Date.now();
+async function updateTodoItem(req, res, next) {
   try {
-    const todo = await Todo.findById(id);
-    if (todo) {
-      todo.status = status;
-      todo.completionTime = completionTime;
-      await todo.save();
-    }
+    const { id } = req.params;
+    const { status } = req.body;
+    const updatedTodo = await todoServices.updateTodo(id, status);
+    res.json(updatedTodo);
   } catch (error) {
-    console.log(error);
+    next(error);
   }
-};
+}
 
-const removeData = async (req, res) => {
-  const { id } = req.params;
+async function deleteTodoItem(req, res, next) {
   try {
-    const todo = await Todo.findByIdAndDelete(id);
-    if (!todo) {
-      res.status(404).json({ error: "Not Found" });
-    }
-    return res.json({ message: "Deleted Successfully" });
+    const { id } = req.params;
+    await todoServices.deleteTodo(id);
+    res.sendStatus(204);
   } catch (error) {
-    res.status(501).json({ error: "Cannot Delete" });
+    next(error);
   }
-};
+}
 
 module.exports = {
-  getData,
-  postData,
-  updateData,
-  removeData,
+  getAllTodoItems,
+  createTodoItem,
+  updateTodoItem,
+  deleteTodoItem,
 };

@@ -6,9 +6,9 @@ const todoController = require("../controllers/todoController");
 
 router.use(cors());
 
-router.post("/", todoController.postData);
-router.get("/", todoController.getData);
-router.put("/:id", todoController.updateData);
-router.delete("/:id", todoController.removeData);
+router.post("/", todoController.createTodoItem);
+router.get("/", todoController.getAllTodoItems);
+router.put("/:id", todoController.updateTodoItem);
+router.delete("/:id", todoController.deleteTodoItem);
 
 module.exports = router;
