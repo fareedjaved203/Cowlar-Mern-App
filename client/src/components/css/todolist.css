@@ -129,3 +129,15 @@ footer {
   width: 100%;
   text-align: center;
 }
+.header-text {
+  color: white;
+  margin-left: 30%;
+  font-size: 25px;
+}
+
+@media (max-width: 800px) {
+  .header-text {
+    font-size: 18px;
+    margin-left: 5%;
+  }
+}

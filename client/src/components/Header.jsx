@@ -9,12 +9,7 @@ const Header = () => {
 
   const linkStyle = {
     color: "white",
-    marginLeft: "10px",
-  };
-  const item = {
-    color: "white",
-    marginLeft: "30%",
-    fontSize: "25px",
+    marginLeft: "1%",
   };
 
   return (
@@ -26,7 +21,7 @@ const Header = () => {
           height={35}
           alt="Logo"
         />
-        <span style={item}>
+        <span className="header-text">
           MERN <span style={{ color: "orange" }}>Todo</span> List
         </span>
       </div>
