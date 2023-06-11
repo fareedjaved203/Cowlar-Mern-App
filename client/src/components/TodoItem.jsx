@@ -15,6 +15,7 @@ const TodoItem = ({
   isOpen,
   confirmId,
 }) => {
+  //the dates stored in mongodb atlas were in ISO format, to format the data, I did these steps:
   const [formattedStartTime, setFormattedStartTime] = useState(null);
   const [formattedCompleteTime, setFormattedCompleteTime] = useState(null);
   const [enableAlert, isAlert] = useState(false);
@@ -24,13 +25,14 @@ const TodoItem = ({
         isAlert(false);
       }, 2000);
 
-      // Clean up the timer when the component unmounts or when enableAlert changes
+      // clean up the timer when the component unmounts or when enableAlert changes
       return () => {
         clearTimeout(timer);
       };
     }
     const startTime = new Date(value.startTime);
     const completionTime = new Date(value.completionTime);
+    //dates are stored in this format 4:25:37 PM
     const formattedStartTime = startTime.toLocaleTimeString();
     const formattedCompletionTime = completionTime.toLocaleTimeString();
     setFormattedStartTime(formattedStartTime);

@@ -1,6 +1,7 @@
 import React from "react";
 import TodoItem from "./TodoItem";
 
+//props are passed here and this component is helping to maintain UI
 const TodoList = ({
   todos,
   toggleAccordion,

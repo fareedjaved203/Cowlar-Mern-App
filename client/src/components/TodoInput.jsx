@@ -6,6 +6,7 @@ import { FaExchangeAlt } from "react-icons/fa";
 import { MdKeyboardArrowDown } from "react-icons/md";
 import { IoIosArrowUp } from "react-icons/io";
 
+//props are passed here
 const TodoInput = ({
   mode,
   toggleMode,

@@ -12,6 +12,7 @@ import { postData } from "../services/postData";
 import Alert from "react-bootstrap/Alert";
 import Header from "./Header";
 
+//using react hooks
 const initialState = {
   todos: [],
   inputValue: "",
@@ -72,6 +73,7 @@ const App = () => {
     alertText,
   } = state;
 
+  //useFffect with dependencies
   useEffect(() => {
     if (enableAlert) {
       const timer = setTimeout(() => {
@@ -112,11 +114,13 @@ const App = () => {
     }
   };
 
+  //to hide/show the items
   const toggleAccordion = (id) => {
     dispatch({ type: "SET_IS_OPEN", payload: !isOpen });
     dispatch({ type: "SET_CONFIRM_ID", payload: id });
   };
 
+  //to view the completed, pending or all items
   const toggleMode = () => {
     if (mode === "input") {
       dispatch({ type: "SET_MODE", payload: "completed" });
@@ -127,11 +131,13 @@ const App = () => {
     }
   };
 
+  //to show/hide items
   const toggleVisibility = () => {
     dispatch({ type: "SET_IS_HIDDEN", payload: !isHidden });
     dispatch({ type: "SET_ACCORDIAN_CHECKED", payload: !accordianChecked });
   };
 
+  //to save data when enter is pressed
   const handleKeyPress = (event) => {
     if (event.key === "Enter") {
       dispatch({ type: "SET_ENABLE_ALERT", payload: true });
@@ -144,6 +150,7 @@ const App = () => {
     }
   };
 
+  //to delete data from db
   const removeTodo = async (id) => {
     try {
       dispatch({ type: "SET_VARIANT", payload: "primary" });
@@ -155,6 +162,7 @@ const App = () => {
     }
   };
 
+  //to mark the item completed in db
   const updateTodo = (id) => {
     dispatch({ type: "SET_VARIANT", payload: "primary" });
     dispatch({ type: "SET_ALERT", payload: "Loading..." });
@@ -163,6 +171,7 @@ const App = () => {
     dispatch({ type: "SET_DATA", payload: "data updated" });
   };
 
+  //function that actually marks the item status
   const handleIconToggle = async (id) => {
     try {
       const data = await updateData(id);
@@ -171,10 +180,12 @@ const App = () => {
     }
   };
 
+  //handles input value
   const handleChange = (e) => {
     dispatch({ type: "SET_INPUT_VALUE", payload: e.target.value });
   };
 
+  //to save data to db
   const sendDataToBackend = async () => {
     try {
       await postData(inputValue);
