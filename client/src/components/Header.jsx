@@ -15,7 +15,12 @@ const Header = () => {
   return (
     <div style={navbarStyle}>
       <div style={linkStyle}>
-        <img src="../src/assets/images/cowlar.png" width={170} height={35} />
+        <img
+          src="../src/assets/images/cowlar.png"
+          width={170}
+          height={35}
+          alt="Logo"
+        />
       </div>
     </div>
   );

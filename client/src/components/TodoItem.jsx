@@ -51,6 +51,7 @@ const TodoItem = ({
             <Col style={{ cursor: "pointer" }}>
               {value.status === "completed" ? (
                 <BsCheckCircleFill
+                  data-testid="status-icon"
                   size={20}
                   style={{ color: "white" }}
                   onClick={() => isAlert(true)}
@@ -58,17 +59,19 @@ const TodoItem = ({
               ) : (
                 <BsCircle
                   onClick={() => handleIconToggle(value._id)}
+                  data-testid="status-icon"
                   size={20}
                   style={{ color: "white" }}
                 />
               )}
             </Col>
             <Col xs={8} onClick={() => toggleAccordion(value._id)}>
-              {value.task}
+              <span data-testid="task-text">{value.task}</span>
             </Col>
 
             <Col>
               <AiTwotoneDelete
+                data-testid="delete-icon"
                 size={20}
                 style={{
                   color: "white",

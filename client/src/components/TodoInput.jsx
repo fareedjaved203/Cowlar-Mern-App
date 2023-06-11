@@ -16,17 +16,18 @@ const TodoInput = ({
   toggleVisibility,
 }) => {
   return (
-    <div className="item-adder">
+    <div className="item-adder" data-testid="Add Item">
       <Container>
         <Row>
           <Col>
             <FaExchangeAlt
+              data-testid="exchange-icon"
               size={25}
               style={{ color: "white", cursor: "pointer" }}
               onClick={toggleMode}
             />
           </Col>
-          <Col xs={8}>
+          <Col xs={8} data-testid="mode-selector">
             {mode === "input" ? (
               <input
                 placeholder="Add Item"
@@ -36,6 +37,7 @@ const TodoInput = ({
                 value={inputValue}
                 onKeyPress={handleKeyPress}
                 onChange={handleChange}
+                autoComplete="off"
               />
             ) : mode === "completed" ? (
               <input
@@ -64,12 +66,14 @@ const TodoInput = ({
           <Col>
             {isHidden ? (
               <IoIosArrowUp
+                data-testid="visibility-icon"
                 size={30}
                 style={{ color: "white", cursor: "pointer" }}
                 onClick={toggleVisibility}
               />
             ) : (
               <MdKeyboardArrowDown
+                data-testid="visibility-icon"
                 size={30}
                 style={{ color: "white", cursor: "pointer" }}
                 onClick={toggleVisibility}

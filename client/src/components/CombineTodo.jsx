@@ -26,6 +26,7 @@ const initialState = {
   alertText: "",
 };
 
+//useReducer is used because states were too large (11) and were interdependent and involved complex state representations
 const reducer = (state, action) => {
   switch (action.type) {
     case "SET_TODOS":
