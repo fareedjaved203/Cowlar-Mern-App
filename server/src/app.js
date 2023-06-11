@@ -9,7 +9,10 @@ const port = process.env.PORT || 8000;
 const api = process.env.API;
 
 require("./model/todoSchema"); //defined schema
+//compression is used to compress the file size in browser which will help to make website faster
 app.use(compression());
+
+//cors is used to successfully passing or getting data from frontend with specifications
 app.use(
   cors({
     origin: api,

@@ -10,6 +10,8 @@ const app = express();
 app.use(bodyParser.json());
 app.use("/todos", router);
 
+//test cases that validates all the operations that are performed at the routes
+
 describe("POST /todos", () => {
   it("creates a new todo item", async () => {
     const todoData = { inputValue: "test todo" };

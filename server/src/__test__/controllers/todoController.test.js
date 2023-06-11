@@ -19,6 +19,8 @@ app.post("/todos", createTodoItem);
 app.put("/todos/:id", updateTodoItem);
 app.delete("/todos/:id", deleteTodoItem);
 
+//test cases that validates all the operations performed in the controller at the backend
+
 describe("getAllTodoItems", () => {
   it("returns all todo items", async () => {
     const todos = [{ task: "test todo" }];

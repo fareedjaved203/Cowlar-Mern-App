@@ -3,6 +3,7 @@ import { render, fireEvent } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import Footer from "../Footer";
 
+//this test case validates the footer
 describe("Footer", () => {
   it("renders footer text correctly", () => {
     const { getByText } = render(<Footer />);

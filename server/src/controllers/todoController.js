@@ -1,5 +1,6 @@
 const todoServices = require("../services/todoServices");
 
+//a function to get all the data stored in db
 async function getAllTodoItems(req, res, next) {
   try {
     const todos = await todoServices.getTodos();
@@ -8,7 +9,7 @@ async function getAllTodoItems(req, res, next) {
     next(error);
   }
 }
-
+//function to post data to db
 async function createTodoItem(req, res, next) {
   try {
     const task = req.body.inputValue;
@@ -19,6 +20,7 @@ async function createTodoItem(req, res, next) {
   }
 }
 
+//function to update the status of the item/task
 async function updateTodoItem(req, res, next) {
   try {
     const { id } = req.params;
@@ -30,6 +32,7 @@ async function updateTodoItem(req, res, next) {
   }
 }
 
+//function to delete an item
 async function deleteTodoItem(req, res, next) {
   try {
     const { id } = req.params;

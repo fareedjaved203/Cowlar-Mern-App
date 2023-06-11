@@ -3,6 +3,7 @@ import { render, fireEvent } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import TodoItem from "../TodoItem";
 
+//these test cases valdates the item which will be added
 describe("TodoItem", () => {
   it("renders task text correctly", () => {
     const value = { _id: "test-id", task: "test task" };

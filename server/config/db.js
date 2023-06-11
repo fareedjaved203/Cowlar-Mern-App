@@ -1,3 +1,4 @@
+//here it is used to connect to database which is mongodb
 const mongoose = require("mongoose");
 require("dotenv").config();
 const DB = process.env.DB_PASSWORD;

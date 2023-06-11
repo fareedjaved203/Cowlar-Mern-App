@@ -3,6 +3,8 @@ import { render, fireEvent } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import TodoInput from "../TodoInput";
 
+//these test cases validate the input and its related fields
+
 describe("TodoInput", () => {
   it("renders an input element", () => {
     const { getByTestId } = render(<TodoInput />);
