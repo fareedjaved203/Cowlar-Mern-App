@@ -4,9 +4,10 @@ const cors = require("cors");
 const compression = require("compression");
 require("dotenv").config();
 require("../config/db");
+const config = require("../config");
 
-const port = process.env.PORT || 8000;
-const api = process.env.API;
+const port = config.port || 8000;
+const api = config.Api;
 
 require("./model/todoSchema"); //defined schema
 //compression is used to compress the file size in browser which will help to make website faster
