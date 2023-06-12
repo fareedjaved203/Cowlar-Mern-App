@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useReducer } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import "./css/todolist.css";
+import "../assets/css/todolist.css";
 import TodoInput from "./TodoInput";
 import TodoList from "./TodoList";
 import TodoItem from "./TodoItem";
