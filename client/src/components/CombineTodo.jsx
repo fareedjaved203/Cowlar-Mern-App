@@ -9,6 +9,8 @@ import { getData } from "../services/getData";
 import { removeData } from "../services/removeData";
 import { updateData } from "../services/updateData";
 import { postData } from "../services/postData";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import Alert from "react-bootstrap/Alert";
 import Header from "./Header";
 
@@ -90,6 +92,7 @@ const App = () => {
   const fetchData = async () => {
     try {
       const receive = await getData();
+
       switch (mode) {
         case "completed":
           dispatch({
@@ -140,13 +143,17 @@ const App = () => {
   //to save data when enter is pressed
   const handleKeyPress = (event) => {
     if (event.key === "Enter") {
-      dispatch({ type: "SET_ENABLE_ALERT", payload: true });
-      dispatch({ type: "SET_VARIANT", payload: "primary" });
-      dispatch({ type: "SET_ALERT", payload: "Loading..." });
+      if (inputValue.trim() !== "") {
+        dispatch({ type: "SET_ENABLE_ALERT", payload: true });
+        dispatch({ type: "SET_VARIANT", payload: "primary" });
+        dispatch({ type: "SET_ALERT", payload: "Loading..." });
 
-      sendDataToBackend();
-      dispatch({ type: "SET_DATA", payload: "data posted" });
-      dispatch({ type: "SET_INPUT_VALUE", payload: "" });
+        sendDataToBackend();
+        dispatch({ type: "SET_DATA", payload: "data posted" });
+        dispatch({ type: "SET_INPUT_VALUE", payload: "" });
+      } else {
+        alert("empty spaces not allowed");
+      }
     }
   };
 

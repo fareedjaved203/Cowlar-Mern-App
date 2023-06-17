@@ -39,6 +39,7 @@ const TodoInput = ({
                 onKeyPress={handleKeyPress}
                 onChange={handleChange}
                 autoComplete="off"
+                maxLength="15"
               />
             ) : mode === "completed" ? (
               <input
