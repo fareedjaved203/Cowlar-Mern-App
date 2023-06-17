@@ -1,12 +1,12 @@
 const Todo = require("../model/todoSchema");
 
 //db connection to get all items
-async function getTodos() {
+async function getTodos(req, res) {
   try {
     const data = await Todo.find();
     return data;
   } catch (error) {
-    console.log(error);
+    res.status(500).json({ message: "Internal server error" });
   }
 }
 
@@ -17,7 +17,7 @@ async function createTodo(task) {
     await todo.save();
     return todo;
   } catch (error) {
-    console.log(error);
+    res.status(500).json({ message: "Internal server error" });
   }
 }
 
@@ -31,9 +31,11 @@ async function updateTodo(id, status) {
       todo.completionTime = completionTime;
       await todo.save();
       return todo;
+    } else {
+      res.status(404).json({ message: "Id Not Found" });
     }
   } catch (error) {
-    console.log(error);
+    res.status(500).json({ message: "Internal server error" });
   }
 }
 
@@ -42,7 +44,7 @@ async function deleteTodo(id) {
   try {
     const todo = await Todo.findByIdAndDelete(id);
   } catch (error) {
-    console.log(error);
+    res.status(500).json({ message: "Internal server error" });
   }
 }
 
