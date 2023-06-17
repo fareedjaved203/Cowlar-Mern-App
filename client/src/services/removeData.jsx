@@ -9,6 +9,14 @@ export const removeData = async (id) => {
   try {
     const response = await axios.delete(`${API_URL}${id}`);
   } catch (error) {
-    console.log(error);
+    if (error.response) {
+      console.log(error.response.data);
+      console.log(error.response.status);
+      console.log(error.response.headers);
+    } else if (error.request) {
+      console.log(error.request);
+    } else {
+      console.log("Error", error.message);
+    }
   }
 };
