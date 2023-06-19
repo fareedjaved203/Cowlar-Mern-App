@@ -4,12 +4,12 @@ A Todo List created using Mern Stack
 
 https://github.com/fareedjaved203/Cowlar-Mern-App/assets/88625362/e2cc3841-70ff-4db6-bc14-efcb5fb4ab3d
 
-#To Start:
+# To Start:
 
 1) npm start
 2) docker-compose up (backend only)
 
-#Features
+# Features
 
 1) Add Item to the Database
 2) Delete Item from the Database
