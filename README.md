@@ -6,8 +6,8 @@ https://github.com/fareedjaved203/Cowlar-Mern-App/assets/88625362/e2cc3841-70ff-
 
 #To Start:
 
-npm start
-docker-compose up (backend only)
+1) npm start
+2) docker-compose up (backend only)
 
 #Features
 
