@@ -1,10 +1,13 @@
-version: "3"
+version: "3.8"
 services:
   client:
     build: ./client
+    image: client
+    stdin_open: true
     ports:
       - "5173:5173"
   server:
+    image: server
     build: ./server
     ports:
       - "8000:8000"

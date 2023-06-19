@@ -8,6 +8,7 @@ const todoController = require("../controllers/todoController");
 router.use(cors());
 
 //routes that lead to the methods defined in controller
+
 router.post("/", todoController.createTodoItem);
 router.get("/", todoController.getAllTodoItems);
 router.put("/:id", todoController.updateTodoItem);
