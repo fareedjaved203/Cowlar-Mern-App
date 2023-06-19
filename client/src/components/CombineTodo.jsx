@@ -27,6 +27,7 @@ const initialState = {
   enableAlert: false,
   variant: "",
   alertText: "",
+  showToast: false,
 };
 
 //useReducer is used because states were too large (11) and were interdependent and involved complex state representations
@@ -54,6 +55,8 @@ const reducer = (state, action) => {
       return { ...state, variant: action.payload };
     case "SET_ALERT":
       return { ...state, alertText: action.payload };
+    case "SET_SHOW_TOAST":
+      return { ...state, showToast: action.payload };
     default:
       return state;
   }
@@ -73,6 +76,7 @@ const App = () => {
     enableAlert,
     variant,
     alertText,
+    showToast,
   } = state;
 
   //useFffect with dependencies
@@ -87,6 +91,7 @@ const App = () => {
       };
     }
     fetchData();
+    dispatch({ type: "SET_ENABLE_ALERT", payload: false });
   }, [mode, data, enableAlert]);
 
   const fetchData = async () => {
@@ -126,8 +131,20 @@ const App = () => {
   //to view the completed, pending or all items
   const toggleMode = () => {
     if (mode === "input") {
+      const resolveAfter3Sec = new Promise((resolve) =>
+        setTimeout(resolve, 500)
+      );
+      toast.promise(resolveAfter3Sec, {
+        pending: "Loading...",
+      });
       dispatch({ type: "SET_MODE", payload: "completed" });
     } else if (mode === "completed") {
+      const resolveAfter3Sec = new Promise((resolve) =>
+        setTimeout(resolve, 500)
+      );
+      toast.promise(resolveAfter3Sec, {
+        pending: "Loading...",
+      });
       dispatch({ type: "SET_MODE", payload: "pending" });
     } else {
       dispatch({ type: "SET_MODE", payload: "input" });
@@ -140,10 +157,51 @@ const App = () => {
     dispatch({ type: "SET_ACCORDIAN_CHECKED", payload: !accordianChecked });
   };
 
+  const clickToAdd = () => {
+    const resolveAfter3Sec = new Promise((resolve) =>
+      setTimeout(resolve, 1000)
+    );
+    toast.promise(resolveAfter3Sec, {
+      pending: "Loading...",
+      success: "Item Added Successfully",
+      error: "Error Adding Item",
+    });
+    if (inputValue.trim() !== "") {
+      dispatch({ type: "SET_ENABLE_ALERT", payload: true });
+      dispatch({ type: "SET_VARIANT", payload: "primary" });
+      dispatch({ type: "SET_ALERT", payload: "Loading..." });
+
+      sendDataToBackend();
+      dispatch({ type: "SET_DATA", payload: "data posted" });
+      dispatch({ type: "SET_INPUT_VALUE", payload: "" });
+    } else {
+      dispatch({ type: "SET_SHOW_TOAST", payload: true });
+      toast.error("Empty Spaces Not Allowed", {
+        position: "top-center",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
+      dispatch({ type: "SET_ENABLE_ALERT", payload: false });
+    }
+  };
+
   //to save data when enter is pressed
   const handleKeyPress = (event) => {
     if (event.key === "Enter") {
       if (inputValue.trim() !== "") {
+        const resolveAfter3Sec = new Promise((resolve) =>
+          setTimeout(resolve, 1000)
+        );
+        toast.promise(resolveAfter3Sec, {
+          pending: "Loading...",
+          success: "Item Added Successfully",
+          error: "Error Adding Item",
+        });
         dispatch({ type: "SET_ENABLE_ALERT", payload: true });
         dispatch({ type: "SET_VARIANT", payload: "primary" });
         dispatch({ type: "SET_ALERT", payload: "Loading..." });
@@ -152,7 +210,16 @@ const App = () => {
         dispatch({ type: "SET_DATA", payload: "data posted" });
         dispatch({ type: "SET_INPUT_VALUE", payload: "" });
       } else {
-        alert("empty spaces not allowed");
+        toast.error("Empty Spaces Not Allowed", {
+          position: "top-center",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+        });
       }
     }
   };
@@ -163,7 +230,16 @@ const App = () => {
       dispatch({ type: "SET_VARIANT", payload: "primary" });
       dispatch({ type: "SET_ALERT", payload: "Loading..." });
       dispatch({ type: "SET_ENABLE_ALERT", payload: true });
+      const resolveAfter3Sec = new Promise((resolve) =>
+        setTimeout(resolve, 1000)
+      );
+      toast.promise(resolveAfter3Sec, {
+        pending: "Loading...",
+        success: "Item Deleted Successfully",
+        error: "Error Deleting Item",
+      });
       const add = await removeData(id);
+      clearTimeout(resolveAfter3Sec);
     } catch (error) {
       console.log(error);
     }
@@ -174,6 +250,14 @@ const App = () => {
     dispatch({ type: "SET_VARIANT", payload: "primary" });
     dispatch({ type: "SET_ALERT", payload: "Loading..." });
     dispatch({ type: "SET_ENABLE_ALERT", payload: true });
+    const resolveAfter3Sec = new Promise((resolve) =>
+      setTimeout(resolve, 1000)
+    );
+    toast.promise(resolveAfter3Sec, {
+      pending: "Loading...",
+      success: "Status Updated Successfully",
+      error: "Error Updating Status",
+    });
     handleIconToggle(id);
     dispatch({ type: "SET_DATA", payload: "data updated" });
   };
@@ -204,8 +288,20 @@ const App = () => {
   return (
     <>
       <Header />
-
-      {enableAlert ? (
+      <ToastContainer
+        toastStyle={{ backgroundColor: " rgba(0, 0, 50, 1)" }}
+        position="top-center"
+        autoClose={2000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
+      {/* {enableAlert ? (
         <div className="custom-toast">
           <Alert
             variant={variant}
@@ -217,7 +313,7 @@ const App = () => {
             {alertText}
           </Alert>
         </div>
-      ) : null}
+      ) : null} */}
 
       <div className="container-fluid body">
         <div className="todo-structure">
@@ -226,6 +322,7 @@ const App = () => {
             toggleMode={toggleMode}
             inputValue={inputValue}
             handleKeyPress={handleKeyPress}
+            clickToAdd={clickToAdd}
             handleChange={handleChange}
             isHidden={isHidden}
             toggleVisibility={toggleVisibility}
